@@ -6,7 +6,7 @@ import { OptionType, backgroundColors, contentWidthArr, fontColors, fontFamilyOp
 
 import styles from './ArticleParamsForm.module.scss';
 import clsx from 'clsx';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Separator } from '../separator';
 import { RadioGroup } from '../radio-group';
 
@@ -22,6 +22,9 @@ interface IArticleParamsFormProps {
 
 export const ArticleParamsForm = ( props: IArticleParamsFormProps) => {
 	const {onApply} = props;
+
+	const formRef = useRef<HTMLFormElement | null>(null)
+	
 	const [visibility, setVisibility] = useState(false);
 	
 	const [selectedFont, setFont] = useState<OptionType>(fontFamilyOptions[0])
@@ -30,11 +33,18 @@ export const ArticleParamsForm = ( props: IArticleParamsFormProps) => {
 	const [selectedBackgroundColor, setBackgroundColor] = useState<OptionType>(backgroundColors[0])
 	const [selectedWidth, setWidth] = useState<OptionType>(contentWidthArr[0])
 
-	const [form, setForm] = useState(defaultArticleState)
-
 	const toggleVisibility = () => {
 		visibility ? setVisibility(false) : setVisibility(true);
 	}
+
+	const handleClickOutside = (evt: MouseEvent) => {
+		if (formRef.current && evt.target instanceof Node && !formRef.current.contains(evt.target)) setVisibility(false)
+	}
+
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, [])
 
 	const handleReset = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
@@ -43,7 +53,6 @@ export const ArticleParamsForm = ( props: IArticleParamsFormProps) => {
 		setFontColor(defaultArticleState.fontColor);
 		setBackgroundColor(defaultArticleState.backgroundColor);
 		setWidth(defaultArticleState.width);
-		setForm(defaultArticleState);
 		onApply(defaultArticleState);
 	}
 
@@ -56,7 +65,6 @@ export const ArticleParamsForm = ( props: IArticleParamsFormProps) => {
 			backgroundColor: selectedBackgroundColor,
 			width: selectedWidth
 		}
-		setForm(newForm);
 		onApply(newForm)
 	}
 
@@ -64,12 +72,11 @@ export const ArticleParamsForm = ( props: IArticleParamsFormProps) => {
 		<>
 			<ArrowButton visibility={visibility} toggleVisibility={toggleVisibility}/>
 			<aside 
-				className={clsx({
-					[styles.container] : true,
+				className={clsx(styles.container, {
 					[styles.container_open] : visibility
 				})}
 			>
-				<form className={styles.form} onReset={handleReset} onSubmit={handleApply}>
+				<form className={styles.form} onReset={handleReset} onSubmit={handleApply} ref={formRef}>
 					<Text as="h2" size={31} uppercase={true} weight={800}>Задайте параметры</Text>
 					
 					<Select
