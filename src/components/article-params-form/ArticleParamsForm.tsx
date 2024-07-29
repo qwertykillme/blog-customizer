@@ -70,7 +70,7 @@ export const ArticleParamsForm = ( props: IArticleParamsFormProps) => {
 				})}
 			>
 				<form className={styles.form} onReset={handleReset} onSubmit={handleApply}>
-					<Text as="h2" size={31} uppercase={true} weight={800}>Хуй</Text>
+					<Text as="h2" size={31} uppercase={true} weight={800}>Задайте параметры</Text>
 					
 					<Select
 						selected={selectedFont}
