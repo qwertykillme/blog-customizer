@@ -11,9 +11,10 @@ export type FontFamiliesClasses = (typeof fontFamilyClasses)[number];
 export type OptionType = {
 	title: string;
 	value: string;
-	className: string;
+	className?: string;
 	optionClassName?: string;
 };
+
 
 export const fontFamilyOptions: OptionType[] & {
 	optionClassName?: FontFamiliesClasses;
@@ -169,11 +170,11 @@ export const fontSizeOptions: OptionType[] = [
 ];
 
 export const defaultArticleState = {
-	fontFamilyOption: fontFamilyOptions[0],
+	font: fontFamilyOptions[0],
+	fontSize: fontSizeOptions[0],
 	fontColor: fontColors[0],
 	backgroundColor: backgroundColors[0],
-	contentWidth: contentWidthArr[0],
-	fontSizeOption: fontSizeOptions[0],
+	width: contentWidthArr[0],
 };
 
 export type ArticleStateType = typeof defaultArticleState;

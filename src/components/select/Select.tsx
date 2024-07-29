@@ -15,7 +15,7 @@ type SelectProps = {
 	selected: OptionType | null;
 	options: OptionType[];
 	placeholder?: string;
-	onChange?: (selected: OptionType) => void;
+	onChange: (selected: OptionType) => void;
 	onClose?: () => void;
 	title?: string;
 };
