@@ -8,7 +8,7 @@ type RadioGroupProps = {
 	name: string;
 	options: OptionType[];
 	selected: OptionType;
-	onChange?: (value: OptionType) => void;
+	onChange: (value: OptionType) => void;
 	title: string;
 };
 
